@@ -1,0 +1,38 @@
+﻿<h3>Login</h3>
+
+
+<p>
+    <label for="email">Email: </label>
+    <Input type="text" id="email" value="@utilisateur.email" />
+</p>
+<p>
+    <label for="password">Password: </label>
+    <Input type="text" id="password" value="@utilisateur.password" />
+</p>
+
+<button value="Sign in" @onclick="connect" />
+
+<div>
+    @connected
+</div>
+
+@code {
+    @using SmartMailBoxLib.Models
+    @using SmartMailBoxLib.Services
+
+    IAccountService accountService = AccountServiceManager.GetAccountService();
+    IUtilisateurService utilisateurService = UtilisateurServiceManager.GetUtilisateurService();
+    Utilisateur utilisateur = new Utilisateur();
+    string connected = "";
+   
+    async void connect()
+    {
+        utilisateur.email = "admin@contejonathan.net";
+        utilisateur.password = "mydil34000";
+        await accountService.Login(utilisateur);
+        GenericObjectWithErrorModel<Utilisateur> utilisateurWithError = utilisateurService.GetUtilisateurConnectedWithErrorModel();
+        connected = utilisateurWithError.t.lastName;
+
+    }
+
+}
