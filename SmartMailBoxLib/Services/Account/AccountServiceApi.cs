@@ -12,32 +12,36 @@ namespace SmartMailBoxLib.Services
 {
     public class AccountServiceApi : IAccountService
     {
+        private RestService _restService;
         
-        public AccountServiceApi()
+        public AccountServiceApi(RestService restService)
         {
+            _restService = restService;
         }
 
         //Login api avec token
         public async Task<string> Login(Utilisateur utilisateur)
         {
-            string response = RestService.Instance.PostReponseLogin(Constants.LoginUrl, utilisateur);
-            RestService.Instance.AddBearerTokenToHeader(response);
+            Console.WriteLine(Constants.LoginUrl);
+            string response = await _restService.PostReponseLogin(Constants.LoginUrl, utilisateur);
+            Console.WriteLine(response);
+            _restService.AddBearerTokenToHeader(response);
             return response;
         }
 
         public GenericObjectWithErrorModel<string> PostForgotPassword(string pUsername)
         {
-            return RestService.Instance.PostReponse<string>(Constants.ForgotPassword, pUsername);
+            return _restService.PostReponse<string>(Constants.ForgotPassword, pUsername);
         }
 
         public GenericObjectWithErrorModel<Utilisateur> PostCreateAccount(Utilisateur _utilisateur)
         {
-            return RestService.Instance.PostReponse<Utilisateur>(Constants.RegisterUtilisateur, JsonConvert.SerializeObject(_utilisateur));
+            return _restService.PostReponse<Utilisateur>(Constants.RegisterUtilisateur, JsonConvert.SerializeObject(_utilisateur));
         }
 
         public void Logout()
         {
-            RestService.Instance.Logout();
+            _restService.Logout();
         }
 
     }

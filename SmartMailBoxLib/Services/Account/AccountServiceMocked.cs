@@ -9,6 +9,7 @@ namespace SmartMailBoxLib.Services
 {
     public class AccountServiceMocked : IAccountService
     {
+        private RestService _restService; //TODO !
         public AccountServiceMocked()
         {
         }
@@ -16,7 +17,7 @@ namespace SmartMailBoxLib.Services
         public async Task<string> Login(Utilisateur utilisateur)
         {
             string response = "TokenMocked";
-            RestService.Instance.AddBearerTokenToHeader(response);
+            _restService.AddBearerTokenToHeader(response);
             return response;
         }
 
@@ -37,7 +38,7 @@ namespace SmartMailBoxLib.Services
 
         public void Logout()
         {
-            RestService.Instance.Logout();
+            _restService.Logout();
         }
     }
 }

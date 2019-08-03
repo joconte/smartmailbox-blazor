@@ -11,51 +11,39 @@ using Ninject;
 
 namespace SmartMailBoxLib.REST
 {
-    internal class RestService
+    public class RestService
     {
-        [Inject]
         protected HttpClient _client { get; set; }
         
         private static RestService instance = null;
         private static readonly object padlock = new object();
 
-        RestService()
+        public RestService(HttpClient httpClient)
         {
-            _client = new HttpClient();
+            //_client = new HttpClient();
+            _client = httpClient;
             _client.BaseAddress = new Uri(Constants.BaseAdresse);
             _client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-        }
-
-        public static RestService Instance
-        {
-            get
-            {
-                lock (padlock)
-                {
-                    if (instance == null)
-                    {
-                        instance = new RestService();
-                    }
-                    return instance;
-                }
-            }
         }
 
         public void Logout()
         {
             instance = null;
-            _client = null;
+            _client = null;  //You probablly dont want to do this
         }
 
-        public string PostReponseLogin(string url, Utilisateur utilisateur)
+        public async Task<string> PostReponseLogin(string url, Utilisateur utilisateur)
         {
+            Console.WriteLine(_client.ToString());
             string token = null;
             const string contentType = "application/json";
 
             string jsonstring = JsonConvert.SerializeObject(utilisateur);
             jsonstring = jsonstring ?? "";
+            Console.WriteLine("jsonstring: " + jsonstring);
             var httpContent = new StringContent(jsonstring, Encoding.UTF8, contentType);
-            var result = _client.PostAsync(url, httpContent).Result;
+            var result = await _client.PostAsync(url, httpContent);
+
             var jsonResult = result.Content.ReadAsStringAsync().Result;
             token = jsonResult;
 
