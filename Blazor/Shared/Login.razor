@@ -1,4 +1,6 @@
-﻿<h3>Login</h3>
+﻿@inject AccountServiceManager AccountServiceManager
+
+<h3>Login</h3>
 
 
 <p>
@@ -10,7 +12,7 @@
     <Input type="text" id="password" value="@utilisateur.password" />
 </p>
 
-<button value="Sign in" @onclick="connect" />
+<button value="Sign in" @onclick="connect" >Login</button>
 
 <div>
     @connected
@@ -19,14 +21,14 @@
 @code {
     @using SmartMailBoxLib.Models
     @using SmartMailBoxLib.Services
-
-    IAccountService accountService = AccountServiceManager.GetAccountService();
+    
     IUtilisateurService utilisateurService = UtilisateurServiceManager.GetUtilisateurService();
     Utilisateur utilisateur = new Utilisateur();
     string connected = "";
    
     async void connect()
     {
+        IAccountService accountService = AccountServiceManager.GetAccountService();
         utilisateur.email = "admin@contejonathan.net";
         utilisateur.password = "mydil34000";
         await accountService.Login(utilisateur);
@@ -34,5 +36,4 @@
         connected = utilisateurWithError.t.lastName;
 
     }
-
 }

@@ -6,18 +6,20 @@ namespace SmartMailBoxLib.Services
 {
     public class UtilisateurServiceApi : IUtilisateurService
     {
+        private RestService _restService; //TODO !
+
         public UtilisateurServiceApi()
         {
         }
 
         public GenericObjectWithErrorModel<Utilisateur> GetUtilisateurConnectedWithErrorModel()
         {
-            return RestService.Instance.GetResponse<GenericObjectWithErrorModel<Utilisateur>>(Constants.UtilisateurConnected);
+            return _restService.GetResponse<GenericObjectWithErrorModel<Utilisateur>>(Constants.UtilisateurConnected);
         }
 
         public GenericObjectWithErrorModel<Utilisateur> PutInformationsPersonnelles(Utilisateur utilisateurUpdated)
         {
-            return RestService.Instance.PutResponse<Utilisateur>(Constants.UpdateUser, JsonConvert.SerializeObject(utilisateurUpdated));
+            return _restService.PutResponse<Utilisateur>(Constants.UpdateUser, JsonConvert.SerializeObject(utilisateurUpdated));
         }
     }
 }

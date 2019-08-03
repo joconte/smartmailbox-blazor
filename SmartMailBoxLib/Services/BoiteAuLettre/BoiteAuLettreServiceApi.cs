@@ -7,18 +7,20 @@ namespace SmartMailBoxLib.Services
 {
     public class BoiteAuLettreServiceApi : IBoiteAuLettreService
     {
+        private RestService _restService; //TODO !
+
         public BoiteAuLettreServiceApi()
         {
         }
 
         public GenericObjectWithErrorModel<BoiteAuLettre> PostCreateBoiteAuLettre(BoiteAuLettre boiteAuLettre)
         {
-            return RestService.Instance.PostReponse<BoiteAuLettre>(Constants.CreateBAL, JsonConvert.SerializeObject(boiteAuLettre));
+            return _restService.PostReponse<BoiteAuLettre>(Constants.CreateBAL, JsonConvert.SerializeObject(boiteAuLettre));
         }
 
         public GenericObjectWithErrorModel<Utilisateur> PutAjoutBoiteToUtilisateur(BoiteAuLettre boiteAuLettre)
         {
-            return RestService.Instance.PostReponse<Utilisateur>(Constants.AddBalToCurrentUser, JsonConvert.SerializeObject(boiteAuLettre));
+            return _restService.PostReponse<Utilisateur>(Constants.AddBalToCurrentUser, JsonConvert.SerializeObject(boiteAuLettre));
         }
     }
 }

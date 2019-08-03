@@ -1,21 +1,25 @@
 ﻿using System;
+using System.Net.Http;
 using SmartMailBoxLib.Models;
 
 namespace SmartMailBoxLib.Services
 {
     public class AccountServiceManager
     {
-        public AccountServiceManager()
+        private readonly AccountServiceApi _accountServiceApi;
+
+        public AccountServiceManager(AccountServiceApi accountServiceApi)
         {
+            _accountServiceApi = accountServiceApi;
         }
 
-        public static IAccountService GetAccountService()
+        public IAccountService GetAccountService()
         {
             IAccountService accountService;
             if (Constants.IsMocked)
                 accountService = new AccountServiceMocked();
             else
-                accountService = new AccountServiceApi();
+                accountService = _accountServiceApi;
 
             return accountService;
         }
